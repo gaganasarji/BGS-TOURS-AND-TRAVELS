@@ -1,10 +1,14 @@
 package com.tours.dao;
 
+import java.util.List;
+
+import com.tours.dto.Destinations;
+
 public interface DestinationDAO {
-	void addDestination(Destination destination);
-	Destination findById(Integer id);
-	List<Destination> findAll();
+	void addDestination(Destinations destination);
+	Destinations findById(Integer id);
+	List<Destinations> findAll();
 	void deleteDestination(Integer id);
-	void updateDestination(Destination destination);
+	void updateDestination(Destinations destination);
 	
 }

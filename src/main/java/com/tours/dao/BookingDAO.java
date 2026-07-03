@@ -1,9 +1,13 @@
 package com.tours.dao;
 
+import java.util.List;
+
+import com.tours.dto.Bookings;
+
 public interface BookingDAO {
-	void addBooking(Booking booking);
-	Booking findById(Integer id);
-	List<Booking> findAll();
+	void addBooking(Bookings booking);
+	Bookings findById(Integer id);
+	List<Bookings> findAll();
 	void deleteBooking(Integer id);
-	void updateBooking(Booking booking);
+	void updateBooking(Bookings booking);
 }
