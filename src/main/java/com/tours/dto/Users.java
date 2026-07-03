@@ -7,6 +7,7 @@ public class Users {
     private String phone;
     private String password;
     private String address;
+    
 	public Integer getUserId() {
 		return userId;
 	}

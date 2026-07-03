@@ -5,6 +5,7 @@ public class Destinations {
 	private String city;
 	private String destDescription;
 	private Integer imageId;
+	
 	public Integer getDestId() {
 		return destId;
 	}
