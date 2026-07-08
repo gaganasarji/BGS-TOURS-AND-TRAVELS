@@ -1,6 +1,6 @@
 <%@page import="com.tours.dto.Packages"%>
-<%@page import="com.travel.dto.Destinations"%>
-<%@page import="com.travel.dto.Images"%>
+<%@page import="com.tours.dto.Destinations"%>
+<%@page import="com.tours.dto.Images"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>

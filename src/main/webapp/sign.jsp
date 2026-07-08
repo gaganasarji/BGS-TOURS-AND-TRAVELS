@@ -51,7 +51,7 @@
             <h2 class="form-title">Welcome Back</h2>
             <p class="form-subtitle">Login to access your bookings and saved trips.</p>
             
-            <form action="#" method="POST">
+            <form action="login" method="POST">
                 <div class="form-group">
                     <label>Email Address</label>
                     <div class="input-with-icon">
@@ -77,7 +77,7 @@
             <h2 class="form-title">Create an Account</h2>
             <p class="form-subtitle">Join us for exclusive travel deals and seamless booking.</p>
             
-            <form action="#" method="POST">
+            <form action="signup" method="POST">
                 <div class="form-group">
                     <label>Full Name</label>
                     <div class="input-with-icon">

@@ -1,5 +1,5 @@
-<%@page import="com.travel.dto.Users"%>
-<%@page import="com.travel.dto.Packages"%>
+<%@page import="com.tours.dto.Users"%>
+<%@page import="com.tours.dto.Packages"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -44,17 +44,17 @@
     %>
 
     <div class="checkout-container">
-        <form action="ProcessBookingServlet" method="POST" class="form-section">
+        <form action="checkout" method="Post" class="form-section">
             <h2>Traveler Details</h2>
             
             <div class="form-group">
                 <label>Primary Traveler Name</label>
-                <input type="text" name="travelerName" value="<%=user.getFullName()%>" required>
+                <input type="text" name="travelerName" value="<%=user.getUserName()%>" required>
             </div>
             
             <div class="form-group">
                 <label>Contact Email</label>
-                <input type="email" name="contactEmail" value="<%=user.getEmail()%>" readonly>
+                <input type="email" name="contactEmail" value="<%=user.getUserEmail()%>" readonly>
             </div>
 
             <div style="display: flex; gap: 15px;">

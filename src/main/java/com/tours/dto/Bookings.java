@@ -53,4 +53,7 @@ public class Bookings {
 						+ ", travelDate=" + travelDate + ", bookingDate=" + bookingDate + ", bookingStatus=" + bookingStatus
 						+ "]";
 			}
+		 public Integer getHotelId() {
+			 return HotelId;
+		 }
 }
