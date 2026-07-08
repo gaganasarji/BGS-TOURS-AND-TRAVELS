@@ -8,7 +8,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Package Details - Sapphire Tours</title>
+    <title>Package Details - BGS Tours And Travels</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -154,7 +154,7 @@
     %>
 
     <nav class="navbar">
-        <a href="index.jsp" class="logo">SAPPHIRE <span>TOURS</span></a>
+        <a href="index.jsp" class="logo">BGS <span>TOURS AND TRAVELS</span></a>
         <a href="packages.jsp" style="text-decoration: none; color: #1a2c3e; font-weight: 500;">Back to Packages</a>
     </nav>
 

@@ -3,6 +3,7 @@ package com.tours.dto;
 public class Bookings {
 	private Integer bookingId;
 	 private Integer userId;
+	 
 	    private Integer packageId;
 	    private String travelDate;
 	    private String bookingDate;
@@ -53,7 +54,5 @@ public class Bookings {
 						+ ", travelDate=" + travelDate + ", bookingDate=" + bookingDate + ", bookingStatus=" + bookingStatus
 						+ "]";
 			}
-		 public Integer getHotelId() {
-			 return HotelId;
-		 }
+		 
 }

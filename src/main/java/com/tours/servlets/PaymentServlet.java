@@ -4,8 +4,11 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 
 import com.tours.dao.BookingDAO;
+import com.tours.dao.PaymentDAO;
 import com.tours.daoImpl.BookingsDAOImpl;
+import com.tours.daoImpl.PaymentDAOImpl;
 import com.tours.dto.Bookings;
+import com.tours.dto.Payment;
 import com.tours.dto.Users;
 
 import jakarta.servlet.ServletException;
@@ -16,7 +19,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 @WebServlet("/payment")
-public class Payment extends HttpServlet{
+public class PaymentServlet extends HttpServlet{
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

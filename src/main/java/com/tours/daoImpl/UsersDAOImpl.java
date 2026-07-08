@@ -1,12 +1,13 @@
 package com.tours.daoImpl;
 
 
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
 
 import com.tours.dao.UsersDAO;
 import com.tours.dto.Users;
@@ -53,8 +54,6 @@ public class UsersDAOImpl implements UsersDAO {
         String query = "SELECT * FROM Users WHERE userId=?";
 
         try {
-
-            
 
             PreparedStatement ps = con.prepareStatement(query);
 
@@ -175,4 +174,61 @@ public class UsersDAOImpl implements UsersDAO {
         }
 
     }
+	@Override
+	public Users getUsersByMailAndPassword(String userEmail, String password) {
+		 Users user = null;
+	        String query = "SELECT * FROM Guest WHERE userEmail=? AND password=?";
+	        try (PreparedStatement ps = con.prepareStatement(query)) {
+	            ps.setString(1, userEmail);
+	            ps.setString(2,password);
+	            ResultSet rs = ps.executeQuery();
+	            while (rs.next()) {
+	                user = new Users();
+	                user.setUserId(rs.getInt("userId"));
+	                user.setUserName(rs.getString("userName"));
+	                user.setUserEmail(rs.getString("userEmail"));
+	                user.setPhone(rs.getString("phone"));
+	                user.setPassword(rs.getString("password"));
+	                user.setAddress(rs.getString("address"));
+	            }
+	        } catch (SQLException e) {
+	            System.out.println("Error fetching guest: " + e.getMessage());
+	        }
+	        return user;
+		
+	}
+	@Override
+	public Users getUsersByMail(String userEmail) {
+		
+		Users user = null;
+
+        String query = "SELECT * FROM Users WHERE userEmail=?";
+
+        try {
+
+            PreparedStatement ps = con.prepareStatement(query);
+
+            ps.setString(1, userEmail);
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+
+                user = new Users();
+
+                user.setUserId(rs.getInt("userId"));
+                user.setUserName(rs.getString("userName"));
+                user.setUserEmail(rs.getString("userEmail"));
+                user.setPhone(rs.getString("phone"));
+                user.setPassword(rs.getString("password"));
+                user.setAddress(rs.getString("address"));
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return user;
+	}
 }
