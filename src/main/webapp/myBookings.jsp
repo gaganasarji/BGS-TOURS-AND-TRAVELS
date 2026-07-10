@@ -1,5 +1,5 @@
-<%@page import="com.tours.dto.Users"%>
-<%@page import="com.tours.dto.Bookings"%>
+<%@page import="com.travel.dto.User"%>
+<%@page import="com.travel.dto.TourBooking"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -47,7 +47,7 @@
 <body>
 
 <% 
-    Users user = (Users)session.getAttribute("user");
+    User user = (User)session.getAttribute("user");
     if(user == null) {
         response.sendRedirect("sign.jsp");
         return;
