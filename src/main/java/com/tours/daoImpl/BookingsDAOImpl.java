@@ -45,7 +45,7 @@ import com.tours.utility.Connector;
 	    }
 
 	    @Override
-	    public Bookings findById(Integer id) {
+	    public Bookings findById(Integer bookingId) {
 
 	        Bookings booking = null;
 
@@ -57,7 +57,7 @@ import com.tours.utility.Connector;
 
 	            PreparedStatement ps = con.prepareStatement(query);
 
-	            ps.setInt(1, id);
+	            ps.setInt(1, bookingId);
 
 	            ResultSet rs = ps.executeQuery();
 
@@ -93,7 +93,7 @@ import com.tours.utility.Connector;
 
 	            PreparedStatement st = con.prepareStatement(query);
 
-	            ResultSet rs = st.executeQuery(query);
+	            ResultSet rs = st.executeQuery();
 
 	            while (rs.next()) {
 
@@ -117,7 +117,7 @@ import com.tours.utility.Connector;
 	    }
 
 	    @Override
-	    public void deleteBooking(Integer id) {
+	    public void deleteBooking(Integer bookingId) {
 
 	        String query = "DELETE FROM Bookings WHERE bookingId=?";
 
@@ -127,7 +127,7 @@ import com.tours.utility.Connector;
 
 	            PreparedStatement ps = con.prepareStatement(query);
 
-	            ps.setInt(1, id);
+	            ps.setInt(1, bookingId);
 
 	            int result = ps.executeUpdate();
 

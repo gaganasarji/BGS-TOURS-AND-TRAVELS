@@ -41,7 +41,7 @@ public class DestinationsDAOImpl implements DestinationDAO {
     }
 
     @Override
-    public Destinations findById(Integer id) {
+    public Destinations findById(Integer destId) {
 
         Destinations destination = null;
 
@@ -52,7 +52,7 @@ public class DestinationsDAOImpl implements DestinationDAO {
 
             PreparedStatement ps = con.prepareStatement(query);
 
-            ps.setInt(1, id);
+            ps.setInt(1, destId);
 
             ResultSet rs = ps.executeQuery();
 
@@ -86,7 +86,7 @@ public class DestinationsDAOImpl implements DestinationDAO {
 
             PreparedStatement ps = con.prepareStatement(query);
 
-            ResultSet rs = ps.executeQuery(query);
+            ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
 
@@ -108,7 +108,7 @@ public class DestinationsDAOImpl implements DestinationDAO {
     }
 
     @Override
-    public void deleteDestination(Integer id) {
+    public void deleteDestination(Integer destId) {
 
         String query = "DELETE FROM Destinations WHERE destId=?";
 
@@ -118,7 +118,7 @@ public class DestinationsDAOImpl implements DestinationDAO {
 
             PreparedStatement ps = con.prepareStatement(query);
 
-            ps.setInt(1, id);
+            ps.setInt(1, destId);
 
             int result = ps.executeUpdate();
 
