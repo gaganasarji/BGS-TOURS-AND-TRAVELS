@@ -6,8 +6,8 @@ import com.tours.dto.Packages;
 
 public interface PackagesDAO {
 	void addPackages(Packages packages);
-	Packages findById(Integer id);
+	Packages findById(Integer packageId);
 	List<Packages> findAll();
-	void deletePackages(Integer id);
+	void deletePackages(Integer packageId);
 	void updatePackages(Packages packages);
 }

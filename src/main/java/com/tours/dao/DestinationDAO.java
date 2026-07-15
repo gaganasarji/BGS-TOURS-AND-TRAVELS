@@ -6,9 +6,9 @@ import com.tours.dto.Destinations;
 
 public interface DestinationDAO {
 	void addDestination(Destinations destination);
-	Destinations findById(Integer id);
+	Destinations findById(Integer destId);
 	List<Destinations> findAll();
-	void deleteDestination(Integer id);
+	void deleteDestination(Integer destId);
 	void updateDestination(Destinations destination);
 	
 }

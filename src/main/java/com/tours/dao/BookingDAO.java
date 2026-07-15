@@ -6,8 +6,8 @@ import com.tours.dto.Bookings;
 
 public interface BookingDAO {
 	void addBooking(Bookings booking);
-	Bookings findById(Integer id);
+	Bookings findById(Integer bookingId);
 	List<Bookings> findAll();
-	void deleteBooking(Integer id);
+	void deleteBooking(Integer bookingId);
 	void updateBooking(Bookings booking);
 }

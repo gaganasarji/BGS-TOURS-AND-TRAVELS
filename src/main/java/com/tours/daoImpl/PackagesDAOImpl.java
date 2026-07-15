@@ -46,7 +46,7 @@ public class PackagesDAOImpl implements PackagesDAO {
     }
 
     @Override
-    public Packages findById(Integer id) {
+    public Packages findById(Integer packageId) {
 
         Packages packages = null;
 
@@ -58,7 +58,7 @@ public class PackagesDAOImpl implements PackagesDAO {
 
             PreparedStatement ps = con.prepareStatement(query);
 
-            ps.setInt(1, id);
+            ps.setInt(1, packageId);
 
             ResultSet rs = ps.executeQuery();
 
@@ -96,7 +96,7 @@ public class PackagesDAOImpl implements PackagesDAO {
 
             PreparedStatement st = con.prepareStatement(query);
 
-            ResultSet rs = st.executeQuery(query);
+            ResultSet rs = st.executeQuery();
 
             while (rs.next()) {
 
@@ -122,7 +122,7 @@ public class PackagesDAOImpl implements PackagesDAO {
     }
 
     @Override
-    public void deletePackages(Integer id) {
+    public void deletePackages(Integer packageId) {
 
         String query = "DELETE FROM Packages WHERE packageId=?";
 
@@ -132,7 +132,7 @@ public class PackagesDAOImpl implements PackagesDAO {
 
             PreparedStatement ps = con.prepareStatement(query);
 
-            ps.setInt(1, id);
+            ps.setInt(1, packageId);
 
             int result = ps.executeUpdate();
 

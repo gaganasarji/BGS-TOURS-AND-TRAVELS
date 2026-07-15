@@ -47,7 +47,7 @@ public class UsersDAOImpl implements UsersDAO {
     }
 
     @Override
-    public Users findById(Integer id) {
+    public Users findById(Integer userId) {
 
         Users user = null;
 
@@ -57,7 +57,7 @@ public class UsersDAOImpl implements UsersDAO {
 
             PreparedStatement ps = con.prepareStatement(query);
 
-            ps.setInt(1, id);
+            ps.setInt(1, userId);
 
             ResultSet rs = ps.executeQuery();
 
@@ -94,7 +94,7 @@ public class UsersDAOImpl implements UsersDAO {
 
             PreparedStatement st = con.prepareStatement(query);
 
-            ResultSet rs = st.executeQuery(query);
+            ResultSet rs = st.executeQuery();
 
             while (rs.next()) {
 
@@ -119,7 +119,7 @@ public class UsersDAOImpl implements UsersDAO {
     }
 
     @Override
-    public void deleteUser(Integer id) {
+    public void deleteUser(Integer userId) {
 
         String query = "DELETE FROM Users WHERE userId=?";
 
@@ -129,7 +129,7 @@ public class UsersDAOImpl implements UsersDAO {
 
             PreparedStatement ps = con.prepareStatement(query);
 
-            ps.setInt(1, id);
+            ps.setInt(1, userId);
 
             int result = ps.executeUpdate();
 
@@ -177,7 +177,7 @@ public class UsersDAOImpl implements UsersDAO {
 	@Override
 	public Users getUsersByMailAndPassword(String userEmail, String password) {
 		 Users user = null;
-	        String query = "SELECT * FROM Guest WHERE userEmail=? AND password=?";
+	        String query = "SELECT * FROM Users WHERE userEmail=? AND password=?";
 	        try (PreparedStatement ps = con.prepareStatement(query)) {
 	            ps.setString(1, userEmail);
 	            ps.setString(2,password);
@@ -192,7 +192,7 @@ public class UsersDAOImpl implements UsersDAO {
 	                user.setAddress(rs.getString("address"));
 	            }
 	        } catch (SQLException e) {
-	            System.out.println("Error fetching guest: " + e.getMessage());
+	            System.out.println("Error fetching user: " + e.getMessage());
 	        }
 	        return user;
 		

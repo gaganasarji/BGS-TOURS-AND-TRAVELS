@@ -7,9 +7,9 @@ import com.tours.dto.Images;
 
 
 public interface ImagesDAO {
-	void addUsers(Images images);
-	Images findById(Integer id);
-	List<Images> findAll();
-	void deleteUser(Integer id);
-	void updateUser(Images images);
+	void addImage(Images image);
+    Images getImageById(Integer imageId);
+	//List<Images> findAll();
+	void updateImage(Images image);
+    void deleteImage(Integer imageId);
 }
