@@ -64,15 +64,19 @@
                 <form action="signup" method="POST">
                     <div class="input-group">
                         <label>Full Name</label>
-                        <input type="text" name="UserName" required>
+                        <input type="text" name="userName" required>
                     </div>
                     <div class="input-group">
                         <label>Phone Number</label>
-                        <input type="text" name="Phone" required>
+                        <input type="text" name="phone" required>
                     </div>
                     <div class="input-group">
                         <label>Email Address</label>
-                        <input type="email" name="UserEmail" required>
+                        <input type="email" name="userEmail" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Address</label>
+                        <input type="text" name="address" required>
                     </div>
                     <div class="input-group">
                         <label>Password</label>

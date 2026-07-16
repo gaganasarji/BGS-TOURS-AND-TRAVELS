@@ -1,6 +1,7 @@
 package com.tours.servlets;
 
 import java.io.IOException;
+
 import com.tours.dao.UsersDAO;
 import com.tours.daoImpl.UsersDAOImpl;
 import com.tours.dto.Users;
@@ -16,53 +17,36 @@ public class Signup extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        
         UsersDAO udao = new UsersDAOImpl();
         Users user = new Users();
 
-        // 1. Gather form input parameters matching the signup.jsp name tokens exactly
-        String nameParam = req.getParameter("userName");
-        String emailParam = req.getParameter("userEmail");
-        String phoneParam = req.getParameter("phone");
-        String addressParam = req.getParameter("address");
-        String passwordParam = req.getParameter("password");
-        String confirmPasswordParam = req.getParameter("confirmPassword");
+        String email = req.getParameter("userEmail");
+        String password = req.getParameter("password");
+        String confirm = req.getParameter("confirm");
 
-        // 2. Perform safe fallback verification checks
-        if (emailParam == null || passwordParam == null || nameParam == null) {
-            req.setAttribute("signupError", "Mandatory form parameters are missing.");
-            req.getRequestDispatcher("signup.jsp").forward(req, resp);
-            return;
-        }
-
-        // 3. Query the DB model to prevent duplicate registrations
-        Users alreadyExists = udao.getUsersByMail(emailParam);
-
+        // Check if email already exists
+        Users alreadyExists = udao.getUsersByMail(email);
+        
         if (alreadyExists == null) {
-            // 4. Confirm security fields match before data storage actions
-            if (passwordParam.equals(confirmPasswordParam)) {
-                
-                // 5. Populate your Users DTO architecture variables
-                user.setUserName(nameParam);
-                user.setUserEmail(emailParam);
-                user.setPhone(phoneParam);
-                user.setAddress(addressParam);
-                user.setPassword(passwordParam);
+            if (password.equals(confirm)) {
+                user.setUserName(req.getParameter("userName"));
+                user.setPhone(req.getParameter("phone"));
+                user.setUserEmail(email);
+                user.setAddress(req.getParameter("address"));
+                user.setPassword(password);
 
-                // 6. Invoke your DAO layer execution routine to save into DB
                 udao.addUsers(user);
-
-                // Forward execution back safely to display success
-                req.setAttribute("signupSuccess", "Account created successfully!");
-                req.getRequestDispatcher("signup.jsp").forward(req, resp);
-            } 
-            else {
-                req.setAttribute("signupError", "Passwords do not match! Verification check failed.");
-                req.getRequestDispatcher("signup.jsp").forward(req, resp);
+                
+                req.setAttribute("signupSuccess", "Account created!");
+                req.getRequestDispatcher("sign.jsp").forward(req, resp);
+            } else {
+                req.setAttribute("signupError", "Password mismatch!");
+                req.getRequestDispatcher("sign.jsp").forward(req, resp);
             }
-        } 
-        else {
-            req.setAttribute("signupError", "An account with this email address already exists.");
-            req.getRequestDispatcher("signup.jsp").forward(req, resp);
+        } else {
+            req.setAttribute("signupError", "Account already exists with this email!");
+            req.getRequestDispatcher("sign.jsp").forward(req, resp);
         }
     }
 }

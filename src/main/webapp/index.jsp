@@ -366,7 +366,7 @@
                     for(Packages p : packagesList) {
                         // Fetch associated destination and image
                         Destinations dest = ddao.findById(p.getDestId());
-                        Images img = idao.findById(p.getImageId());
+                        Images img = idao.getImageById(p.getImageId());
                         
                         // Fallback data if DB links are broken
                         String cityName = (dest != null) ? dest.getCity() : "Karnataka";
