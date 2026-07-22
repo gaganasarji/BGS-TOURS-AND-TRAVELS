@@ -11,7 +11,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet("/signup")
+@WebServlet("/sign")
 public class Signup extends HttpServlet {
 
     @Override
@@ -30,7 +30,7 @@ public class Signup extends HttpServlet {
         // 2. Perform safe fallback verification checks
         if (emailParam == null || passwordParam == null || nameParam == null) {
             req.setAttribute("signupError", "Mandatory form parameters are missing.");
-            req.getRequestDispatcher("signup.jsp").forward(req, resp);
+            req.getRequestDispatcher("sign.jsp").forward(req, resp);
             return;
         }
 
@@ -53,16 +53,16 @@ public class Signup extends HttpServlet {
 
                 // Forward execution back safely to display success
                 req.setAttribute("signupSuccess", "Account created successfully!");
-                req.getRequestDispatcher("signup.jsp").forward(req, resp);
+                req.getRequestDispatcher("sign.jsp").forward(req, resp);
             } 
             else {
                 req.setAttribute("signupError", "Passwords do not match! Verification check failed.");
-                req.getRequestDispatcher("signup.jsp").forward(req, resp);
+                req.getRequestDispatcher("sign.jsp").forward(req, resp);
             }
         } 
         else {
             req.setAttribute("signupError", "An account with this email address already exists.");
-            req.getRequestDispatcher("signup.jsp").forward(req, resp);
+            req.getRequestDispatcher("sign.jsp").forward(req, resp);
         }
     }
 }

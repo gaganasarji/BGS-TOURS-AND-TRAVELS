@@ -63,7 +63,7 @@
             <!-- Signup Form -->
             <div id="signupForm" class="form-section">
                 <h2>Create Account</h2>
-                <form action="signup" method="POST">
+                <form action="sign" method="POST">
                     <div class="input-group">
                         <label>Full Name</label>
                         <input type="text" name="UserName" required>
