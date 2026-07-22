@@ -12,4 +12,5 @@ public interface UsersDAO {
 	void updateUser(Users user);
 	Users getUsersByMailAndPassword(String userEmail,String password);
 	Users getUsersByMail(String userEmail);
+	
 }

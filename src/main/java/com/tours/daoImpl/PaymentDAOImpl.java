@@ -21,7 +21,7 @@ private Connection con;
 
 	 @Override
 	    public void addPayment(Payment payment) {
-	        String sql = "INSERT INTO Payment (booking_id, amount, payment_date, method) VALUES (?, ?, SYSDATE(), ?)";
+	        String sql = "INSERT INTO Payment (booking_id, amount, payment_date, method) VALUES (?, ?, NOW(), ?)";
 	        try (PreparedStatement ps = con.prepareStatement(sql)) {
 	            ps.setInt(1, payment.getBookingId());
 	            ps.setDouble(2, payment.getAmount());
@@ -85,6 +85,7 @@ private Connection con;
 	            ps.setDouble(2,payment.getAmount());
 	            ps.setString(3,payment.getPaymentDate());
 	            ps.setString(4,payment.getMethod());
+	            ps.setInt(5, payment.getPaymentId());
 	            ps.executeUpdate();
 	        } catch (SQLException e) {
 	            System.out.println("Error updating payment: " + e.getMessage());
@@ -106,7 +107,7 @@ private Connection con;
 		@Override
 		public Payment getPaymentByBookingId(Integer bookingId) {
 			Payment payment = null;
-	        String query = "SELECT * FROM Payment WHERE bookingId=?";
+	        String query = "SELECT * FROM Payment WHERE booking_id=?";
 	        try (PreparedStatement ps = con.prepareStatement(query)) {
 	            ps.setInt(1, bookingId);
 	            ResultSet rs = ps.executeQuery();
