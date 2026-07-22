@@ -2,29 +2,31 @@ package com.tours.utility;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public class Connector {
+public static Connection requestConnection() {
+	
 
-    public static Connection requestConnection() {
+	    Connection con = null;
 
-        Connection con = null;
+	    try {
+	        Class.forName("com.mysql.cj.jdbc.Driver");
+	        System.out.println("Driver class added");
 
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            System.out.println("Driver Loaded Successfully");
+	        con = DriverManager.getConnection(
+	                "jdbc:mysql://localhost:3306/tours",
+	                "root",
+	                "Gaganasarji@29");
 
-            con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/tours",
-                    "root",
-                    "Gaganasarji@29");
+	        System.out.println("Connection Successful: " + con);
 
-            System.out.println("Database Connected Successfully");
+	    } catch (Exception e) {
+	        System.out.println("Connection Failed!");
+	        e.printStackTrace();
+	    }
 
-        } catch (Exception e) {
-            System.out.println("Connection Failed");
-            e.printStackTrace();
-        }
+	    return con;
+	}
 
-        return con;
-    }
 }
