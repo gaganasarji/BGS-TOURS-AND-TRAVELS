@@ -45,16 +45,18 @@
             <div id="loginForm" class="form-section active">
                 <h2>Welcome Back</h2>
                 <form action="login" method="POST">
-                    <div class="input-group">
-                        <label>Email Address</label>
-                        <input type="email" name="mail" required>
-                    </div>
-                    <div class="input-group">
-                        <label>Password</label>
-                        <input type="password" name="password" required>
-                    </div>
-                    <button type="submit" class="btn">Login</button>
-                </form>
+     <div class="form-group">
+        <label class="form-label" for="email">Email Address</label>
+        <input type="email" id="email" name="mail" class="form-input" required>
+     </div>
+     <div class="form-group">
+        <label class="form-label" for="password">Password</label>
+        <div class="password-wrapper">
+            <input type="password" id="password" name="password" class="form-input" required>
+        </div>
+    </div>
+    <button type="submit" class="btn-login">Login to Account</button>
+	</form>
                 <div class="toggle-text">Don't have an account? <a onclick="toggleForms()">Sign up here</a></div>
             </div>
 

@@ -15,55 +15,50 @@ public class DestinationsDAOImpl implements DestinationDAO {
 	public DestinationsDAOImpl() {
 		this.con=Connector.requestConnection();
 	}
-    @Override
+	@Override
     public void addDestination(Destinations destination) {
-
         String query = "INSERT INTO Destinations(city, destDescription, imageId) VALUES(?,?,?)";
-
-        try {
-
-            
-
-            PreparedStatement ps = con.prepareStatement(query);
+        
+        // try-with-resources automatically closes the Connection and PreparedStatement
+        try (Connection con = Connector.requestConnection();
+             PreparedStatement ps = con.prepareStatement(query)) {
 
             ps.setString(1, destination.getCity());
             ps.setString(2, destination.getDestDescription());
-            ps.setInt(3, destination.getImageId());
+            
+            // Handle potentially null imageId safely if needed, though standard int handles it here assuming DTO uses Integer
+            if (destination.getImageId() != null) {
+                ps.setInt(3, destination.getImageId());
+            } else {
+                ps.setNull(3, java.sql.Types.INTEGER);
+            }
 
             ps.executeUpdate();
-
             System.out.println("Destination added successfully.");
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     @Override
     public Destinations findById(Integer destId) {
-
         Destinations destination = null;
-
         String query = "SELECT * FROM Destinations WHERE destId=?";
 
-        try {
-
-
-            PreparedStatement ps = con.prepareStatement(query);
+        try (Connection con = Connector.requestConnection();
+             PreparedStatement ps = con.prepareStatement(query)) {
 
             ps.setInt(1, destId);
 
-            ResultSet rs = ps.executeQuery();
-
-            if (rs.next()) {
-
-                destination = new Destinations();
-
-                destination.setDestId(rs.getInt("destId"));
-                destination.setCity(rs.getString("city"));
-                destination.setDestDescription(rs.getString("destDescription"));
-                destination.setImageId(rs.getInt("imageId"));
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    destination = new Destinations();
+                    destination.setDestId(rs.getInt("destId"));
+                    destination.setCity(rs.getString("city"));
+                    destination.setDestDescription(rs.getString("destDescription"));
+                    destination.setImageId(rs.getInt("imageId"));
+                }
             }
 
         } catch (Exception e) {
@@ -75,23 +70,15 @@ public class DestinationsDAOImpl implements DestinationDAO {
 
     @Override
     public List<Destinations> findAll() {
-
         List<Destinations> list = new ArrayList<>();
-
         String query = "SELECT * FROM Destinations";
 
-        try {
-
-            
-
-            PreparedStatement ps = con.prepareStatement(query);
-
-            ResultSet rs = ps.executeQuery();
+        try (Connection con = Connector.requestConnection();
+             PreparedStatement ps = con.prepareStatement(query);
+             ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
-
                 Destinations destination = new Destinations();
-
                 destination.setDestId(rs.getInt("destId"));
                 destination.setCity(rs.getString("city"));
                 destination.setDestDescription(rs.getString("destDescription"));
@@ -109,56 +96,53 @@ public class DestinationsDAOImpl implements DestinationDAO {
 
     @Override
     public void deleteDestination(Integer destId) {
-
         String query = "DELETE FROM Destinations WHERE destId=?";
 
-        try {
-
-            
-
-            PreparedStatement ps = con.prepareStatement(query);
+        try (Connection con = Connector.requestConnection();
+             PreparedStatement ps = con.prepareStatement(query)) {
 
             ps.setInt(1, destId);
-
             int result = ps.executeUpdate();
 
-            if (result > 0)
+            if (result > 0) {
                 System.out.println("Destination deleted successfully.");
-            else
+            } else {
                 System.out.println("Destination not found.");
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     @Override
     public void updateDestination(Destinations destination) {
-
         String query = "UPDATE Destinations SET city=?, destDescription=?, imageId=? WHERE destId=?";
 
-        try {
-
-           
-
-            PreparedStatement ps = con.prepareStatement(query);
+        try (Connection con = Connector.requestConnection();
+             PreparedStatement ps = con.prepareStatement(query)) {
 
             ps.setString(1, destination.getCity());
             ps.setString(2, destination.getDestDescription());
-            ps.setInt(3, destination.getImageId());
+            
+            if (destination.getImageId() != null) {
+                ps.setInt(3, destination.getImageId());
+            } else {
+                ps.setNull(3, java.sql.Types.INTEGER);
+            }
+            
             ps.setInt(4, destination.getDestId());
 
             int result = ps.executeUpdate();
 
-            if (result > 0)
+            if (result > 0) {
                 System.out.println("Destination updated successfully.");
-            else
+            } else {
                 System.out.println("Destination not found.");
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 }
