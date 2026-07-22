@@ -18,6 +18,7 @@ public class UsersDAOImpl implements UsersDAO {
 	private Connection con;
 	public UsersDAOImpl() {
 		this.con=Connector.requestConnection();
+		System.out.println("Connection = " + con);
 	}
     @Override
     public void addUsers(Users user) {

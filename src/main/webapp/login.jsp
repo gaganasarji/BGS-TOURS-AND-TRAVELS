@@ -508,6 +508,10 @@
 </head>
 <body>
 
+<%String success=(String)request.getAttribute("success");%>
+        <%if(success!=null){%>
+        	<h6 style="color:green;"><%=success%></h6>
+        <%}%>
     <!-- NAVBAR -->
     <nav class="navbar">
         <a href="index.jsp" class="logo">BGS <span>TOURS</span></a>
