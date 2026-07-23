@@ -140,6 +140,47 @@ import com.tours.utility.Connector;
 	            e.printStackTrace();
 	        }
 	    }
+	    
+	    @Override
+	    public List<Bookings> findByUserId(Integer userId) {
+
+	        List<Bookings> list = new ArrayList<>();
+
+	        String query = "SELECT * FROM Bookings WHERE userId=?";
+
+	        try {
+
+	            PreparedStatement ps = con.prepareStatement(query);
+	            ps.setInt(1, userId);
+
+	            ResultSet rs = ps.executeQuery();
+
+	            while (rs.next()) {
+
+	                Bookings booking = new Bookings();
+
+	                booking.setBookingId(rs.getInt("bookingId"));
+	                booking.setUserId(rs.getInt("userId"));
+	                booking.setPackageId(rs.getInt("packageId"));
+	                booking.setTravelDate(rs.getString("travelDate"));
+	                booking.setBookingDate(rs.getString("bookingDate"));
+	                booking.setBookingStatus(rs.getString("bookingStatus"));
+
+	                list.add(booking);
+	            }
+
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+
+	        return list;
+	    }
+	    
+	    
+	    
+	    
+	    
+	    
 
 	    @Override
 	    public void updateBooking(Bookings booking) {

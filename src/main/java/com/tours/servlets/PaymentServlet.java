@@ -1,13 +1,15 @@
 package com.tours.servlets;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
-import com.tours.dao.BookingDAO;
-import com.tours.dao.PaymentDAO;
 import com.tours.daoImpl.BookingsDAOImpl;
+import com.tours.daoImpl.DestinationsDAOImpl;
+import com.tours.daoImpl.PackagesDAOImpl;
 import com.tours.daoImpl.PaymentDAOImpl;
 import com.tours.dto.Bookings;
+import com.tours.dto.Destinations;
+import com.tours.dto.Packages;
 import com.tours.dto.Payment;
 import com.tours.dto.Users;
 
@@ -19,63 +21,93 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 @WebServlet("/payment")
-public class PaymentServlet extends HttpServlet{
+public class PaymentServlet extends HttpServlet {
 
 	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		PaymentDAO pdao=new PaymentDAOImpl();
-		BookingDAO bdao=new BookingsDAOImpl();
-		
-		HttpSession session=req.getSession();
-		Users user=(Users)session.getAttribute("user");
-		
-		Integer bookingId=Integer.parseInt(req.getParameter("bookingId"));
-		
-		System.out.println(bookingId);
-		Bookings b=bdao.findById(bookingId);
-		if(user!=null) {
-
-			Payment p=pdao.getPaymentByBookingId(bookingId);
-			if(p==null) {
-				p=new Payment();
-				p.setBookingId(bookingId);
-				p.setMethod(req.getParameter("method"));
-				p.setAmount(Double.parseDouble(req.getParameter("finalPrice")));
-				p.setPaymentDate(LocalDateTime.now().toString());
-				pdao.addPayment(p);
-			}
-			forwardToBill(req, resp, bookingId);
-			//req.getRequestDispatcher("bill.jsp").forward(req, resp);
-		}
-		else {
-			req.setAttribute("loginError", "Session expired!");
-			req.getRequestDispatcher("sign.jsp").forward(req, resp);
-		}
-
-	}
-	
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		Integer bookingId=Integer.parseInt(req.getParameter("bookingId"));
-		forwardToBill(req, resp, bookingId);
-	}
-	
-	private void forwardToBill(HttpServletRequest req, HttpServletResponse resp, Integer bookingId) 
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 	        throws ServletException, IOException {
-	    PaymentDAO pdao = new PaymentDAOImpl();
-	    BookingDAO bdao = new BookingsDAOImpl();
-	   
 
-	    Bookings b = bdao.findById(bookingId);
-	    System.out.println("booking Id"+bookingId);
-	    Payment p = pdao.getPaymentByBookingId(bookingId);
+	    HttpSession session = req.getSession();
+	    Users user = (Users) session.getAttribute("user");
 
-	    
-	    req.setAttribute("booking", b);
-	    req.setAttribute("payment", p);
-	    req.setAttribute("success", "Payment succesful!");
+	    if (user == null) {
+	        req.setAttribute("loginError", "Session Expired");
+	        req.getRequestDispatcher("sign.jsp").forward(req, resp);
+	        return;
+	    }
+
+	    int bookingId = Integer.parseInt(req.getParameter("bookingId"));
+
+	    BookingsDAOImpl bdao = new BookingsDAOImpl();
+	    PackagesDAOImpl pdao = new PackagesDAOImpl();
+	    PaymentDAOImpl paydao = new PaymentDAOImpl();
+	    DestinationsDAOImpl ddao = new DestinationsDAOImpl();
+
+	    Bookings booking = bdao.findById(bookingId);
+
+	    if (booking == null) {
+	        resp.sendRedirect("myBookings.jsp");
+	        return;
+	    }
+
+	    Payment payment = paydao.getPaymentByBookingId(bookingId);
+
+	    if (payment == null) {
+
+	        payment = new Payment();
+	        payment.setBookingId(bookingId);
+	        payment.setAmount(Double.parseDouble(req.getParameter("amount")));
+	        payment.setMethod(req.getParameter("method"));
+	        payment.setPaymentDate(LocalDate.now().toString());
+
+	        paydao.addPayment(payment);
+
+	        booking.setBookingStatus("CONFIRMED");
+	        bdao.updateBooking(booking);
+
+	        payment = paydao.getPaymentByBookingId(bookingId);
+	    }
+
+	    Packages pack = pdao.findById(booking.getPackageId());
+
+	    Destinations destination = ddao.findById(pack.getDestId());
+
+	    req.setAttribute("booking", booking);
+	    req.setAttribute("tourPackage", pack);
+	    req.setAttribute("payment", payment);
+	    req.setAttribute("destination", destination);
+	    req.setAttribute("success", "Payment Successful");
+
 	    req.getRequestDispatcher("bill.jsp").forward(req, resp);
 	}
 
-	
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+	        throws ServletException, IOException {
+
+	    int bookingId = Integer.parseInt(req.getParameter("bookingId"));
+
+	    BookingsDAOImpl bdao = new BookingsDAOImpl();
+	    PackagesDAOImpl pdao = new PackagesDAOImpl();
+	    PaymentDAOImpl paydao = new PaymentDAOImpl();
+	    DestinationsDAOImpl ddao = new DestinationsDAOImpl();
+
+	    Bookings booking = bdao.findById(bookingId);
+
+	    if (booking == null) {
+	        resp.sendRedirect("myBookings.jsp");
+	        return;
+	    }
+
+	    Packages pack = pdao.findById(booking.getPackageId());
+	    Payment payment = paydao.getPaymentByBookingId(bookingId);
+	    Destinations destination = ddao.findById(pack.getDestId());
+
+	    req.setAttribute("booking", booking);
+	    req.setAttribute("tourPackage", pack);
+	    req.setAttribute("payment", payment);
+	    req.setAttribute("destination", destination);
+
+	    req.getRequestDispatcher("bill.jsp").forward(req, resp);
+	}
 }

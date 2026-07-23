@@ -17,7 +17,7 @@ public static Connection requestConnection() {
 	        con = DriverManager.getConnection(
 	                "jdbc:mysql://localhost:3306/tours",
 	                "root",
-	                "Gaganasarji@29");
+	                "root");
 
 	        System.out.println("Connection Successful: " + con);
 

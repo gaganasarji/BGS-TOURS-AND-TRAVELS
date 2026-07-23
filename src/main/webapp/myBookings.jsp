@@ -1,68 +1,223 @@
+<%@page import="java.util.List"%>
 <%@page import="com.tours.dto.Users"%>
 <%@page import="com.tours.dto.Bookings"%>
+<%@page import="com.tours.dto.Packages"%>
 <%@page import="com.tours.daoImpl.BookingsDAOImpl"%>
-<%@page import="java.util.List"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@page import="com.tours.daoImpl.PackagesDAOImpl"%>
+<%@page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+
+<%
+Users user = (Users) session.getAttribute("user");
+
+if (user == null) {
+	response.sendRedirect("sign.jsp");
+	return;
+}
+
+BookingsDAOImpl bdao = new BookingsDAOImpl();
+PackagesDAOImpl pdao = new PackagesDAOImpl();
+
+List<Bookings> bookings = bdao.findByUserId(user.getUserId());
+%>
+
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Manage Bookings | BGS Admin</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Inter', sans-serif; background: #f1f5f9; padding: 40px; }
-        .container { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { padding: 15px; border-bottom: 1px solid #e2e8f0; text-align: left; }
-        th { background: #f8f9fa; }
-        select { padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1; }
-        .btn-update { padding: 8px 16px; background: #1a2c3e; color: white; border: none; border-radius: 6px; cursor: pointer; }
-    </style>
+<meta charset="UTF-8">
+<title>My Bookings | BGS Tours & Travels</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+	margin:0;
+	padding:0;
+	box-sizing:border-box;
+	font-family:'Inter',sans-serif;
+}
+
+body{
+	background:#f5f7fb;
+	padding:40px;
+}
+
+.container{
+	max-width:1100px;
+	margin:auto;
+}
+
+h1{
+	color:#1a2c3e;
+	margin-bottom:25px;
+}
+
+.back-btn{
+	display:inline-block;
+	margin-bottom:20px;
+	padding:12px 20px;
+	background:#115eb6;
+	color:white;
+	text-decoration:none;
+	border-radius:8px;
+	font-weight:600;
+}
+
+.back-btn:hover{
+	background:#0d4c94;
+}
+
+table{
+	width:100%;
+	border-collapse:collapse;
+	background:white;
+	box-shadow:0 10px 25px rgba(0,0,0,.08);
+	border-radius:12px;
+	overflow:hidden;
+}
+
+th{
+	background:#115eb6;
+	color:white;
+	padding:15px;
+}
+
+td{
+	padding:15px;
+	text-align:center;
+	border-bottom:1px solid #eee;
+}
+
+tr:hover{
+	background:#f8fbff;
+}
+
+.pending{
+	color:#f39c12;
+	font-weight:bold;
+}
+
+.confirmed{
+	color:#2ecc71;
+	font-weight:bold;
+}
+
+.completed{
+	color:#27ae60;
+	font-weight:bold;
+}
+
+.cancelled{
+	color:#e74c3c;
+	font-weight:bold;
+}
+
+.footer{
+	margin-top:30px;
+	text-align:center;
+	color:gray;
+	font-size:14px;
+}
+
+</style>
+
 </head>
+
 <body>
-    <% 
-        Users admin = (Users)session.getAttribute("user");
-        if(admin == null || admin.getUserId() != 1) { response.sendRedirect("sign.jsp"); return; }
-    %>
-    <div class="container">
-        <h2><a href="admin.jsp" style="text-decoration: none; color: #27ae60; margin-right: 15px;">&larr;</a> Manage All Bookings</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Booking ID</th>
-                    <th>User ID</th>
-                    <th>Package ID</th>
-                    <th>Travel Date</th>
-                    <th>Current Status</th>
-                    <th>Update Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                <%
-                    BookingsDAOImpl bdao = new BookingsDAOImpl();
-                    List<Bookings> allBookings = bdao.findAll();
-                    for(Bookings b : allBookings) {
-                %>
-                <tr>
-                    <td>#BGS-<%=b.getBookingId()%></td>
-                    <td><%=b.getUserId()%></td>
-                    <td><%=b.getPackageId()%></td>
-                    <td><%=b.getTravelDate()%></td>
-                    <td><strong><%=b.getBookingStatus()%></strong></td>
-                    <td>
-                        <form action="updateBooking" method="POST" style="display: flex; gap: 10px;">
-                            <input type="hidden" name="bookingId" value="<%=b.getBookingId()%>">
-                            <select name="status">
-                                <option value="PENDING" <%=b.getBookingStatus().equals("PENDING")?"selected":""%>>Pending</option>
-                                <option value="COMPLETED" <%=b.getBookingStatus().equals("COMPLETED")?"selected":""%>>Completed</option>
-                                <option value="CANCELLED" <%=b.getBookingStatus().equals("CANCELLED")?"selected":""%>>Cancelled</option>
-                            </select>
-                            <button type="submit" class="btn-update">Update</button>
-                        </form>
-                    </td>
-                </tr>
-                <% } %>
-            </tbody>
-        </table>
-    </div>
+
+<div class="container">
+
+<a href="packages.jsp" class="back-btn">← Back to Packages</a>
+
+<h1>My Bookings</h1>
+
+<table>
+
+<tr>
+<th>Booking ID</th>
+<th>Package Name</th>
+<th>Travel Date</th>
+<th>Booking Date</th>
+<th>Status</th>
+</tr>
+
+<%
+if(bookings.isEmpty()){
+%>
+
+<tr>
+<td colspan="5">No bookings found.</td>
+</tr>
+
+<%
+}else{
+
+for(Bookings b : bookings){
+
+Packages pack = pdao.findById(b.getPackageId());
+%>
+
+<tr>
+
+<td><%=b.getBookingId()%></td>
+
+<td>
+<%= (pack != null) ? pack.getPackageName() : "Package Not Found" %>
+</td>
+
+<td><%=b.getTravelDate()%></td>
+
+<td><%=b.getBookingDate()%></td>
+
+<td>
+
+<%
+String status = b.getBookingStatus();
+
+if("PENDING".equalsIgnoreCase(status)){
+%>
+
+<span class="pending">Pending</span>
+
+<%
+}else if("CONFIRMED".equalsIgnoreCase(status)){
+%>
+
+<span class="confirmed">Confirmed</span>
+
+<%
+}else if("COMPLETED".equalsIgnoreCase(status)){
+%>
+
+<span class="completed">Completed</span>
+
+<%
+}else{
+%>
+
+<span class="cancelled">Cancelled</span>
+
+<%
+}
+%>
+
+</td>
+
+</tr>
+
+<%
+}
+}
+%>
+
+</table>
+
+<div class="footer">
+© 2026 BGS Tours & Travels
+</div>
+
+</div>
+
 </body>
 </html>
