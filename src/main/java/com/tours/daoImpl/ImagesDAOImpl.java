@@ -33,7 +33,7 @@ public class ImagesDAOImpl implements ImagesDAO {
 	}
 
 	@Override
-	public Images getImageById(Integer imageId) {
+	public Images getImageByIdImages(Integer imageId) {
 		Images image = null;
 		String sql = "SELECT * FROM Images WHERE imageId=?";
 		try (PreparedStatement ps = con.prepareStatement(sql)) {
